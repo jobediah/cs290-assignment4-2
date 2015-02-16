@@ -1,0 +1,17 @@
+Work log:
+
+Start: Sun, 15 Feb 2015 16:00:51 -0700 
+End: Sun, 15 Feb 2015 21:05:01 -0700 
+Tasks: Added filter dropdown menu and button that makes calls to javascript to filter
+out results.
+
+Start: 15 Feb 2015 09:35:51 -0700 
+End: 15 Feb 2015 15:17:01 -0700 
+Tasks: Finished table with database info and functional toggling checked Out/Available 
+button and delete button.
+
+Start: Mon, 14 Feb 2015 12:00:00 -0700 
+End: Mon, 14 Feb 2015 22:34:33 -0700 
+Tasks: Website has form to add video, which is connected to the database. 
+Can delete all videos with additional remove all button. Added ajax to file.js. It
+now makes calls to the server for database information. Basic table layout finished.
