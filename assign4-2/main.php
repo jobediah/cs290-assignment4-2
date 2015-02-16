@@ -25,7 +25,6 @@ and class lectures. Some implementation concepts came stackoverflow. */
 		echo "Connection successful!<br>";
 	}
 	
-	//Check the value of post
 	$HTTPMethod = $_SERVER['REQUEST_METHOD'];
 
 	if($HTTPMethod === 'POST'){
@@ -39,7 +38,7 @@ and class lectures. Some implementation concepts came stackoverflow. */
 				
 			/*if(!$mysqli->query("DROP TABLE IF EXISTS movieDatabase") || !$mysqli->query("CREATE TABLE movieDatabase(id INT NOT NULL, name VARCHAR(255) NOT NULL, category VARCHAR(255), length INT, rented BOOL NOT NULL)")){
 				echo "Table creation failed: (".$mysqli->errno.") ". $mysqli->error;
-			} Used this only one to step up database.*/
+			} Used this only once to set up database.*/
 			
 				if (!($stmt = $mysqli->prepare("INSERT INTO movieDatabase(name, category, length, rented) VALUES (?, ?, ?, ?)"))) {
   	  				echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
