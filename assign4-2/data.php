@@ -4,31 +4,17 @@ ini_set('display_errors', 'On');
 include 'password.php'
 ?>
 <?php
-/* General syntax was acquired from class lectures, php.net, and w3schools. 
-Some implementation concepts came from the class discusion board.*/ 
+/* Most of the syntax was acquired from php.net, http://php.net/manual/en/mysqli.quickstart.php,
+and class lectures. Some implementation concepts came stackoverflow. */ 
 	
 //Connect to database
 $mysqli = new mysqli("oniddb.cws.oregonstate.edu", "hansejod-db", $password, "hansejod-db");
 
-			
-//if(!$stmt = $mysqli->prepare("SELECT * FROM store_inventory ORDER BY id");
-//$stmt->execute();
-//$res = $stmt->get_result();
-//$row = $res->fetch_assoc();
-//$names = $row['name'];
-
-//$res = $stmt->get_result();
-//$row = $res->fetch_assoc();
-
-
+//Grab all rows in order by id
 if (!($stmt = $mysqli->prepare("SELECT * FROM movieDatabase ORDER BY id"))) {
 	echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error . "<br>";
 }
   
-//if (!($stmt->bind_param("s", $category))) {
-//    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-//}
-    
 if (!($stmt->execute())) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt.error;
 }
@@ -40,18 +26,15 @@ else {
 $res = $stmt->get_result();
 $row = $res->fetch_assoc();
 
-
-$results = array();
+//Create an array of all results
+$allResults = array();
 while ($row) {
-	array_push($results, $row);
+	array_push($allResults, $row);
     $row = $res->fetch_assoc();
 }
-  //EXPLICIT CLOSE RECOMMENDED
+
 $stmt->close();
 
-
-echo json_encode($results);
-
-//printf("id = %s %s (%s)\n", $row['id'], $row['name'], gettype($row['id']));
+echo json_encode($allResults);
 
 ?>	

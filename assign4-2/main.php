@@ -13,8 +13,8 @@ include 'password.php'
 <body>
 
 <?php
-/* General syntax was acquired from class lectures, php.net, and w3schools. 
-Some implementation concepts came from the class discusion board.*/ 
+/* Most of the syntax was acquired from php.net, http://php.net/manual/en/mysqli.quickstart.php,
+and class lectures. Some implementation concepts came stackoverflow. */
 	
 	//Connect to database
 	$mysqli = new mysqli("oniddb.cws.oregonstate.edu", "hansejod-db", $password, "hansejod-db");
@@ -22,13 +22,14 @@ Some implementation concepts came from the class discusion board.*/
 		echo "Failed to connect: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	} 
 	else {
-		echo "Connection worked!.<br>";
+		echo "Connection successful!<br>";
 	}
 	
 	//Check the value of post
 	$HTTPMethod = $_SERVER['REQUEST_METHOD'];
 
 	if($HTTPMethod === 'POST'){
+		//Insert values into database
 		if(isset($_POST['addVideo'])){
 			if(isset($_POST['name']) && isset($_POST['category']) && isset($_POST['length']) && !empty($_POST['name']) && !empty($_POST['category']) && !empty($_POST['length'])){
 				$movieName = $_POST['name'];
@@ -38,7 +39,7 @@ Some implementation concepts came from the class discusion board.*/
 				
 			/*if(!$mysqli->query("DROP TABLE IF EXISTS movieDatabase") || !$mysqli->query("CREATE TABLE movieDatabase(id INT NOT NULL, name VARCHAR(255) NOT NULL, category VARCHAR(255), length INT, rented BOOL NOT NULL)")){
 				echo "Table creation failed: (".$mysqli->errno.") ". $mysqli->error;
-			}*/
+			} Used this only one to step up database.*/
 			
 				if (!($stmt = $mysqli->prepare("INSERT INTO movieDatabase(name, category, length, rented) VALUES (?, ?, ?, ?)"))) {
   	  				echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
@@ -62,7 +63,7 @@ Some implementation concepts came from the class discusion board.*/
 		}
 
 		elseif(isset($_POST['deleteAll'])){
-			echo "Delete all";
+			//Delete all rows of database
 			if (!($stmt = $mysqli->prepare("DELETE FROM movieDatabase"))) {
 				echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 			}
@@ -74,19 +75,20 @@ Some implementation concepts came from the class discusion board.*/
 			$stmt->close();
 		}
 	
-	
-
 		elseif(isset($_POST['updateTrue'])){
+			//Change rented value so that it is checked out.
 			$iden = $_POST['updateTrue'];	
 			$mysqli->query("Update movieDatabase Set rented = true Where id = $iden");
 		}
 		
 		elseif(isset($_POST['updateFalse'])){
+			//Change rented value so that it is available.
 			$iden = $_POST['updateFalse'];	
 			$mysqli->query("Update movieDatabase Set rented = false Where id = $iden");
 		}
 		
 		elseif(isset($_POST['deleteVideo'])){
+			//Remove selected video from database
 			$id = $_POST['deleteVideo'];
 			
 			if (!($stmt = $mysqli->prepare("DELETE FROM movieDatabase WHERE id = $id"))){
@@ -111,15 +113,19 @@ Some implementation concepts came from the class discusion board.*/
 			<input type='text' name='name'><br>
 			<label>Video category:</label>
 			<input type='text' name='category'><br>
-			<label>Video length:</label>
-			<input type='number' name='length' min='1' max='4'><br>
+			<label>Video length (minutes):</label>
+			<input type='number' name='length' min='1' max='340'><br>
 			<input type='submit' name='addVideo' value='Add'>
 			</fieldset>
 			<p><input type="submit" name='deleteAll' value="Remove all videos" style="background-color:red"></p>
 	</form>
-	<div id="table">
-	</div>
-	<div id="hidden_form_container"></div>	
+	
+		<select id="dropdown">
+		</select>
+		<input type="submit" value="Filter results" onclick="Javascript:filterButton()">
+	
+	<div id="table"></div>
+	<div id="hidden_form1"></div>	
 	<div id="hidden_form2"></div>
 	<div id="hidden_form3"></div>	 	
 </body>
